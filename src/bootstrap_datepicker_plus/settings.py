@@ -6,14 +6,20 @@ from typing import Any, Dict, Optional, Tuple
 from django.conf import settings as django_settings
 
 try:
-    from pydantic import Field, validator
-    from pydantic.env_settings import BaseSettings, SettingsSourceCallable
-except Exception:  # pragma: no cover
-    from pydantic.v1 import Field, validator  # type: ignore
+    # Pydantic v2
+    from pydantic import Field
+    from pydantic_settings import BaseSettings
+    from pydantic_settings.sources import SettingsSourceCallable  # v2
+    PYDANTIC_V2 = True
+except Exception:
+    # Pydantic v1 (or pydantic.v1 compatibility)
+    from pydantic.v1 import Field  # type: ignore
     from pydantic.v1.env_settings import (  # type: ignore
         BaseSettings,
         SettingsSourceCallable,
     )
+
+    PYDANTIC_V2 = False
 
 from .schemas import WidgetOptions, WidgetVariant
 
